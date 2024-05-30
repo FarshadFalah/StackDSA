@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.Stack;
+
+
 /***
  * <h1>Car Fleet</h1>
  * There are n cars traveling to the same destination on a one-lane highway.
@@ -45,6 +49,36 @@
  * 0 <= position[i] < target
  * <p>
  * All the values of position are unique.
+
  */
+
+
 public class CarFleet {
+    public static int carFleet(int target, int[] position, int[] speed) {
+        int n = position.length;
+        double[][] cars = new double[n][2];
+
+        for (int i = 0; i < n; i++) {
+            cars[i][0] = position[i];
+            cars[i][1] = (double) (target - position[i]) / speed[i];
+        }
+
+        Arrays.sort(cars, (a, b) -> Double.compare(b[0], a[0]));
+
+        Stack<Double> stack = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            double time = cars[i][1];
+            if (stack.isEmpty() || time > stack.peek()) {
+                stack.push(time);
+            }
+        }
+
+        return stack.size();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(carFleet(10, new int[]{1, 4}, new int[]{3, 2}));  // Output: 1
+        System.out.println(carFleet(10, new int[]{4, 1, 0, 7}, new int[]{2, 2, 1, 1}));  // Output: 3
+    }
 }

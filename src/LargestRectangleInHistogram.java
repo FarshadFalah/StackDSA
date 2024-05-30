@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /***
  * <h1>Largest Rectangle In Histogram</h1>
  * You are given an array of Integers heights where heights[i] represents the height of a bar. The width of each bar is 1.
@@ -24,5 +26,41 @@
  * <p>
  * 0 <= heights[i] <= 1000
  */
+
 public class LargestRectangleInHistogram {
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+        int index = 0;
+
+        while (index < heights.length) {
+            if (stack.isEmpty() || heights[index] >= heights[stack.peek()]) {
+                stack.push(index++);
+            } else {
+                int topOfStack = stack.pop();
+                int height = heights[topOfStack];
+                int width = stack.isEmpty() ? index : index - stack.peek() - 1;
+                maxArea = Math.max(maxArea, height * width);
+            }
+        }
+
+        while (!stack.isEmpty()) {
+            int topOfStack = stack.pop();
+            int height = heights[topOfStack];
+            int width = stack.isEmpty() ? index : index - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+
+        return maxArea;
+    }
+
+    public static void main(String[] args) {
+        LargestRectangleInHistogram solution = new LargestRectangleInHistogram();
+
+        int[] heights1 = {7, 1, 7, 2, 2, 4};
+        System.out.println(solution.largestRectangleArea(heights1)); // Output: 8
+
+        int[] heights2 = {1, 3, 7};
+        System.out.println(solution.largestRectangleArea(heights2)); // Output: 7
+    }
 }
