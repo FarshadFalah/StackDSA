@@ -38,9 +38,6 @@ public class ValidateParentheses {
 
     public boolean isValid(String s) {
 
-
-
-
         return true;
     }
 }
